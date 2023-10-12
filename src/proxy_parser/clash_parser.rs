@@ -12,6 +12,10 @@ pub struct ClashParser {}
 impl ProxyParser for ClashParser {
     fn port_from_path(path_str: String) -> Result<String, Error> {
         let path = Path::new(&path_str);
+        if !path.is_file() {
+            println!("Can not find the file :{:?}", path_str);
+            return Err(Error::from(ErrorKind::NotFound));
+        }
         let extension = path.extension();
         if extension.is_none() {
             println!(
@@ -28,9 +32,8 @@ impl ProxyParser for ClashParser {
         let doc = &docs[0];
 
         // // Debug support
-        println!("{:?}", doc);
-
-        let port_str = doc["mixed-port"][0].as_str();
+        // println!("{:?}", doc);
+        let port_str = doc["mixed-port"].as_i64();
         if port_str.is_none() {
             println!(" can not find port config in file :{:?}", path_str);
             return Err(Error::from(ErrorKind::NotFound));
