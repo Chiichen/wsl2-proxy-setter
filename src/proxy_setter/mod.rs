@@ -1,7 +1,8 @@
 use std::io::Error;
 
-pub mod UbuntuSetter;
+pub mod ubuntu_setter;
 
 pub trait ProxySetter {
-    fn set_proxy(port: String) -> Result<String, Error>;
+    fn set_proxy(hostip: String, port: String) -> Result<(), Error>;
+    fn read_hostip() -> Result<String, Error>;
 }
